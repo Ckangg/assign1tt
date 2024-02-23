@@ -193,7 +193,8 @@ class Section2:
                         }
                     class_count_train = list(nu.Counter(ytrain).values())
                     class_count_test = list(nu.Counter(ytest).values())
-                    key = f"train_{ntrain}_test_{ntest}"
+                    '''key = f"train_{ntrain}_test_{ntest}"'''
+                    key=ntrain
                     answer[key] = {
                     "partC": pb2,
                     "partD": pb3,
