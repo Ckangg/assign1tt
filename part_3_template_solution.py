@@ -67,8 +67,8 @@ class Section3:
     ]:
         """ """
         # Enter code and return the `answer`` dictionary
-        X,y =nu.load_mnist_dataset()
-        X=nu.scale(X)
+        '''X,y =nu.load_mnist_dataset()
+        X=nu.scale(X)'''
          
         ntrains = [1000, 5000, 10000]
         ntests = [200, 1000, 2000]
