@@ -200,7 +200,7 @@ class Section1:
         clf = DecisionTreeClassifier(random_state=42)
         ks = [2, 5, 8, 16]  # Different values of k
         pe1={}
-        for k in ks:
+        '''for k in ks:
             cv = ShuffleSplit(n_splits=k, test_size=0.2, random_state=42)
             scores = cross_validate(clf, X, y, cv=cv, scoring='accuracy', return_train_score=False)
     
@@ -214,7 +214,29 @@ class Section1:
         
         answer["clf"] = clf
         answer["cv"] = cv
-        answer["scores"] = pe1
+        answer["scores"] = pe1'''
+        for k in ks:
+            cv = ShuffleSplit(n_splits=k, test_size=0.2, random_state=42)
+            scores = cross_validate(clf, X, y, cv=cv, scoring='accuracy', return_train_score=False)
+            
+    # Calculate mean and standard deviation for accuracy and fit time
+            mean_accuracy = np.mean(scores['test_score'])
+            std_accuracy = np.std(scores['test_score'])
+            mean_fit_time = np.mean(scores['fit_time'])
+            std_fit_time = np.std(scores['fit_time'])
+            answer={}
+    # Store the results in a nested dictionary
+    # Now, instead of pe1, directly assign to the answer dictionary
+            answer[k] = {
+            'scores': {
+            'Mean accuracy': mean_accuracy,
+            'Standard deviation': std_accuracy,
+            'Mean fit time': mean_fit_time,
+            'Standard deviation of fit time': std_fit_time
+        },
+        'clf': clf,
+        'cv': cv
+    }
         
 
         # Enter your code, construct the `answer` dictionary, and return it.
