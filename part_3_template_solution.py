@@ -81,7 +81,7 @@ class Section3:
              Xtrain, Xtest = X[:ntrain], X[ntrain:ntrain+ntest]
              ytrain, ytest = y[:ntrain], y[ntrain:ntrain+ntest]
              
-             model=LogisticRegression(random_state=self.seed,max_iter=300))
+             model=LogisticRegression(random_state=self.seed,max_iter=1000))
              model.fit(Xtrain, ytrain)
              
              train_scores = [nu.top_k_accuracy_score(ytrain, model.predict_proba(Xtrain), k=k) for k in ks]
