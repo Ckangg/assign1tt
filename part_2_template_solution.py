@@ -137,10 +137,11 @@ class Section2:
         """ """
         # Enter your code and fill the `answer`` dictionary
         '''Xtrain, ytrain, Xtest, ytest = u.prepare_data()
-        Xtrain = nu.scale_data(Xtrain)
-        Xtest = nu.scale_data(Xtest)'''
-        X,y=u.load_mnist_dataset()
-        X=nu.scale(X)
+        Xtrain = nu.scale_data(Xtrain)'''
+        X, y, Xtest, ytest = u.prepare_data()
+        '''Xtest = nu.scale_data(Xtest)'''
+        '''X,y=u.load_mnist_dataset()
+        X=nu.scale(X)'''
         '''Xtrain = X[0:ntrain, :]
         ytrain = y[0:ntrain]
         Xtest = X[ntrain:ntrain+test]
