@@ -101,8 +101,8 @@ class Section3:
              for k, score_train, score_test in zip(ks, train_scores, test_scores):
                  answer[k] = {"score_train": score_train, "score_test": score_test}
              
-             answer["clf"] = "Logistic Regression"
-             answer["clf2"]= model
+             answer["clf"] = model
+             
              answer["plot_k_vs_score_train"] = list(zip(ks, train_scores))
              answer["plot_k_vs_score_test"] = list(zip(ks, test_scores))
              
