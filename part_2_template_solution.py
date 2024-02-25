@@ -70,8 +70,8 @@ class Section2:
         length_ytest = len(ytest)
         
         # Find the maximum values in the training and testing datasets
-        max_Xtrain = Xtrain.max()
-        max_Xtest = Xtest.max()
+        max_Xtrain = np.max(Xtrain)
+        max_Xtest = np.max(Xtest)
         
         # Fill the answer dictionary
         answer = {
@@ -104,8 +104,8 @@ class Section2:
         # return values:
         # Xtrain, ytrain, Xtest, ytest: the data used to fill the `answer`` dictionary
 
-        Xtrain = Xtest = np.zeros([1, 1], dtype="float")
-        ytrain = ytest = np.zeros([1], dtype="int")
+        '''Xtrain = Xtest = np.zeros([1, 1], dtype="float")
+        ytrain = ytest = np.zeros([1], dtype="int")'''
 
         return answer, Xtrain, ytrain, Xtest, ytest
 
@@ -138,7 +138,7 @@ class Section2:
         # Enter your code and fill the `answer`` dictionary
         '''Xtrain, ytrain, Xtest, ytest = u.prepare_data()
         Xtrain = nu.scale_data(Xtrain)'''
-        X, y, Xtest, ytest = u.prepare_data()
+        '''X, y, Xtest, ytest = u.prepare_data()'''
         '''Xtest = nu.scale_data(Xtest)'''
         '''X,y=u.load_mnist_dataset()
         X=nu.scale(X)'''
@@ -158,8 +158,8 @@ class Section2:
         for ntrain, ntest in sizes:
                     Xtrain, ytrain = X[:ntrain], y[:ntrain]
                     Xtest, ytest = X[ntrain:ntrain+ntest], y[ntrain:ntrain+ntest]
-                    clf = nu.DecisionTreeClassifier(random_state=42)
-                    cv = nu.KFold(n_splits=5, shuffle=True, random_state=42)
+                    clf = nu.DecisionTreeClassifier(random_state=self.seed)
+                    cv = nu.KFold(n_splits=5, shuffle=True,random_state=self.seed)
                     results=nu.train_simple_classifier_with_cv(Xtrain=Xtrain,ytrain=ytrain,clf=clf,cv=cv)
                     pb2 = {
                             'mean_fit_time': results['fit_time'].mean(),
@@ -169,8 +169,8 @@ class Section2:
                             "clf": clf,  
                             "cv": cv
                         }
-                    clf = nu.DecisionTreeClassifier(random_state=42)
-                    cv = nu.ShuffleSplit(n_splits=5, test_size=0.2, random_state=42)
+                    clf = nu.DecisionTreeClassifier(random_state=self.seed)
+                    cv = nu.ShuffleSplit(n_splits=5, test_size=0.2,random_state=self.seed)
                     results=nu.train_simple_classifier_with_cv(Xtrain=Xtrain,ytrain=ytrain,clf=clf,cv=cv)
                     pb3 = {
                             'mean_fit_time': results['fit_time'].mean(),
@@ -180,7 +180,7 @@ class Section2:
                             "clf": clf,  
                             "cv": cv
                         }
-                    cv = nu.ShuffleSplit(n_splits=5, test_size=0.2, random_state=42)
+                    cv = nu.ShuffleSplit(n_splits=5, test_size=0.2,random_state=self.seed)
                     clf = nu.LogisticRegression(max_iter=300, multi_class='ovr', solver='lbfgs')
                     clf.fit(Xtrain, ytrain)
                     results=nu.train_simple_classifier_with_cv(Xtrain=Xtrain,ytrain=ytrain,clf=clf,cv=cv)
