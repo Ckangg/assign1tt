@@ -161,7 +161,7 @@ class Section2:
                     clf_D = nu.DecisionTreeClassifier(random_state=self.seed)
                     cv_D = nu.ShuffleSplit(n_splits=5, test_size=0.2,random_state=self.seed)
                     results=nu.train_simple_classifier_with_cv(Xtrain=Xtrain,ytrain=ytrain,clf=clf_D,cv=cv_D)
-                    score_D = {
+                    scores_D = {
                             'mean_fit_time': results['fit_time'].mean(),
                             'std_fit_time': results['fit_time'].std(),
                             'mean_accuracy': results['test_score'].mean(),
