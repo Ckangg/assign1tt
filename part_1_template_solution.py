@@ -474,13 +474,14 @@ class Section1:
         """
 
         return answer'''
- def partG(
-        self,
-        X: NDArray[np.floating],
-        y: NDArray[np.int32],
-        Xtest: NDArray[np.floating],
-        ytest: NDArray[np.int32],
-    ) -> dict[str, Any]:
+ 
+        def partG(
+                self,
+                X: NDArray[np.floating],
+                y: NDArray[np.int32],
+                Xtest: NDArray[np.floating],
+                ytest: NDArray[np.int32],
+            ) -> dict[str, Any]:
         """
         Perform classification using the given classifier and cross validator.
 
@@ -509,54 +510,54 @@ class Section1:
          5) max_features 
          5) n_estimators
         """
-        param_grid = {
+                param_grid = {
         'criterion': ['gini', 'entropy'],
         'max_depth': [10, 20, 30],
         'min_samples_split': [2, 5, 10],
         'min_samples_leaf': [1, 2, 4],
         'max_features': ['sqrt', 'log2'],
         #"n_estimators":[50,100,200]
-        }
-        cv = ShuffleSplit(n_splits=5, random_state=self.seed)
-        rf = RandomForestClassifier(random_state=42)
-        rf.fit(X,y)
+                }
+                cv = ShuffleSplit(n_splits=5, random_state=self.seed)
+                rf = RandomForestClassifier(random_state=42)
+                rf.fit(X,y)
         # Predictions with the initial model
-        y_train_pred_orig = rf.predict(X)
-        y_test_pred_orig = rf.predict(Xtest)
+                y_train_pred_orig = rf.predict(X)
+                y_test_pred_orig = rf.predict(Xtest)
 
         # Confusion matrices
-        conf_matrix_train_orig = confusion_matrix(y, y_train_pred_orig)
-        conf_matrix_test_orig = confusion_matrix(ytest, y_test_pred_orig)
+                conf_matrix_train_orig = confusion_matrix(y, y_train_pred_orig)
+                conf_matrix_test_orig = confusion_matrix(ytest, y_test_pred_orig)
 
         # Accuracies
-        accuracy_train_orig = nu.accuracy(conf_matrix_train_orig)
-        accuracy_test_orig = nu.accuracy(conf_matrix_test_orig)
+                accuracy_train_orig = nu.accuracy(conf_matrix_train_orig)
+                accuracy_test_orig = nu.accuracy(conf_matrix_test_orig)
 
 # Initialize GridSearchCV
-        grid_search = GridSearchCV(estimator=rf, param_grid=param_grid, cv=cv, scoring='accuracy')
+                grid_search = GridSearchCV(estimator=rf, param_grid=param_grid, cv=cv, scoring='accuracy')
 
         # Perform grid search
-        grid_search.fit(X, y)
-        best_clf = grid_search.best_estimator_
-        accuracy = best_clf.score(Xtest,ytest)
+                grid_search.fit(X, y)
+                best_clf = grid_search.best_estimator_
+                accuracy = best_clf.score(Xtest,ytest)
 
-        mean_test_scores = grid_search.cv_results_['mean_test_score']
+                mean_test_scores = grid_search.cv_results_['mean_test_score']
         # Calculate the mean accuracy
-        mean_accuracy = mean_test_scores.mean()
-        best_rf_clf = best_clf
+                mean_accuracy = mean_test_scores.mean()
+                best_rf_clf = best_clf
         #best_rf_clf.fit(X,y)
-        y_train_pred_best = best_rf_clf.predict(X)
-        y_test_pred_best = best_rf_clf.predict(Xtest)
+                y_train_pred_best = best_rf_clf.predict(X)
+                y_test_pred_best = best_rf_clf.predict(Xtest)
        # Confusion matrices
-        conf_matrix_train_best = confusion_matrix(y, y_train_pred_best)
-        conf_matrix_test_best = confusion_matrix(ytest, y_test_pred_best)
+                conf_matrix_train_best = confusion_matrix(y, y_train_pred_best)
+                conf_matrix_test_best = confusion_matrix(ytest, y_test_pred_best)
 
         # Accuracies
-        accuracy_train_best = nu.accuracy(conf_matrix_train_best)
-        accuracy_test_best = nu.accuracy(conf_matrix_test_best) 
+                accuracy_train_best = nu.accuracy(conf_matrix_train_best)
+                accuracy_test_best = nu.accuracy(conf_matrix_test_best) 
 
 
-        answer = {
+                answer = {
     "clf": rf,
     "default_parameters": rf.get_params(),
     "best_estimator": best_clf,
@@ -570,7 +571,7 @@ class Section1:
     "accuracy_best_full_training": accuracy_train_best,
     "accuracy_orig_full_testing": accuracy_test_orig,
     "accuracy_best_full_testing": accuracy_test_best,
-}
+        }
 
 # Now, you can print or return the answer dictionary.
 
