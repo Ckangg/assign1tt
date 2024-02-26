@@ -157,7 +157,7 @@ class Section2:
                             'std_accuracy': results['test_score'].std(),
                  
                         }
-                    partC = {"scores_C": scores_C, "clf": clf_C, "cv": cv_C}
+                    part_C = {"scores_C": scores_C, "clf": clf_C, "cv": cv_C}
                     clf_D = nu.DecisionTreeClassifier(random_state=self.seed)
                     cv_D = nu.ShuffleSplit(n_splits=5, test_size=0.2,random_state=self.seed)
                     results=nu.train_simple_classifier_with_cv(Xtrain=Xtrain,ytrain=ytrain,clf=clf_D,cv=cv_D)
@@ -168,11 +168,11 @@ class Section2:
                             'std_accuracy': results['test_score'].std(),
                             
                         }
-                    partD = {"scores_D": scores_D, "clf": clf_D, "cv": cv_D}
+                    part_D = {"scores_D": scores_D, "clf": clf_D, "cv": cv_D}
                     cv_F = nu.ShuffleSplit(n_splits=5, test_size=0.2,random_state=self.seed)
                     clf_F = nu.LogisticRegression(max_iter=300, multi_class='ovr', solver='lbfgs')
                     
-                    scores=cross_validate(clf_F,Xtrain,ytrain,cv=cv_F,return_train_score=True)
+                    scores=nu.cross_validate(clf_F,Xtrain,ytrain,cv=cv_F,return_train_score=True)
                     clf_F.fit(Xtrain, ytrain)
                     scores_train_F = clf_F.score(Xtrain, ytrain)
 
