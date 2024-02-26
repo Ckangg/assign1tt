@@ -136,70 +136,73 @@ class Section2:
     ) -> dict[int, dict[str, Any]]:
         """ """
         # Enter your code and fill the `answer`` dictionary
-        '''Xtrain, ytrain, Xtest, ytest = u.prepare_data()
-        Xtrain = nu.scale_data(Xtrain)'''
-        '''X, y, Xtest, ytest = u.prepare_data()'''
-        '''Xtest = nu.scale_data(Xtest)'''
-        '''X,y=u.load_mnist_dataset()
-        X=nu.scale(X)'''
-        '''Xtrain = X[0:ntrain, :]
-        ytrain = y[0:ntrain]
-        Xtest = X[ntrain:ntrain+test]
-        ytest = y[ntrain:ntrain+test]'''
+       
         answer = {}
        
         pb2={}
         sizes = [(1000, 200), (5000, 1000), (10000, 2000)]
-        '''X_train, y_train, X_test, y_test = u.prepare_data()
-        if nu.scale(X_train) and nu.scale(X_test):
-            print("Scaling successful")
-        else:
-            print("Scaling failed")'''
+        
         for ntrain, ntest in sizes:
                     Xtrain, ytrain = X[:ntrain], y[:ntrain]
                     Xtest, ytest = X[ntrain:ntrain+ntest], y[ntrain:ntrain+ntest]
-                    clf = nu.DecisionTreeClassifier(random_state=self.seed)
-                    cv = nu.KFold(n_splits=5, shuffle=True,random_state=self.seed)
-                    results=nu.train_simple_classifier_with_cv(Xtrain=Xtrain,ytrain=ytrain,clf=clf,cv=cv)
-                    pb2 = {
+                    clf_C = nu.DecisionTreeClassifier(random_state=self.seed)
+                    cv_C = nu.KFold(n_splits=5, shuffle=True,random_state=self.seed)
+                    results=nu.train_simple_classifier_with_cv(Xtrain=Xtrain,ytrain=ytrain,clf=clf_C,cv=cv_C)
+                    scores_C = {
                             'mean_fit_time': results['fit_time'].mean(),
                             'std_fit_time': results['fit_time'].std(),
                             'mean_accuracy': results['test_score'].mean(),
                             'std_accuracy': results['test_score'].std(),
-                            "clf": clf,  
-                            "cv": cv
+                 
                         }
-                    clf = nu.DecisionTreeClassifier(random_state=self.seed)
-                    cv = nu.ShuffleSplit(n_splits=5, test_size=0.2,random_state=self.seed)
-                    results=nu.train_simple_classifier_with_cv(Xtrain=Xtrain,ytrain=ytrain,clf=clf,cv=cv)
-                    pb3 = {
+                    partC = {"scores_C": scores_C, "clf": clf_C, "cv": cv_C}
+                    clf_D = nu.DecisionTreeClassifier(random_state=self.seed)
+                    cv_D = nu.ShuffleSplit(n_splits=5, test_size=0.2,random_state=self.seed)
+                    results=nu.train_simple_classifier_with_cv(Xtrain=Xtrain,ytrain=ytrain,clf=clf_D,cv=cv_D)
+                    score_D = {
                             'mean_fit_time': results['fit_time'].mean(),
                             'std_fit_time': results['fit_time'].std(),
                             'mean_accuracy': results['test_score'].mean(),
                             'std_accuracy': results['test_score'].std(),
-                            "clf": clf,  
-                            "cv": cv
+                            
                         }
-                    cv = nu.ShuffleSplit(n_splits=5, test_size=0.2,random_state=self.seed)
-                    clf = nu.LogisticRegression(max_iter=300, multi_class='ovr', solver='lbfgs')
-                    clf.fit(Xtrain, ytrain)
-                    results=nu.train_simple_classifier_with_cv(Xtrain=Xtrain,ytrain=ytrain,clf=clf,cv=cv)
-                    pb4 = {
-                            'mean_fit_time': results['fit_time'].mean(),
-                            'std_fit_time': results['fit_time'].std(),
-                            'mean_accuracy': results['test_score'].mean(),
-                            'std_accuracy': results['test_score'].std(),
-                            "clf": clf,  
-                            "cv": cv
-                        }
+                    partD = {"scores_D": scores_D, "clf": clf_D, "cv": cv_D}
+                    cv_F = nu.ShuffleSplit(n_splits=5, test_size=0.2,random_state=self.seed)
+                    clf_F = nu.LogisticRegression(max_iter=300, multi_class='ovr', solver='lbfgs')
+                    clf_F.fit(Xtrain, ytrain)
+                    scores_train_F = clf_F.score(Xtrain, ytrain)
+
+                    # Scores on test set
+                    scores_test_F = clf_F.score(Xtest, ytest)
+
+                    # Mean cross-validation accuracy
+                    results_F = nu.train_simple_classifier_with_cv(Xtrain=Xtrain, ytrain=ytrain, clf=clf_F, cv=cv_F)
+                    mean_cv_accuracy_F = results_F['test_score'].mean()
+
+                    # Confusion matrix for training set
+                    conf_mat_train = nu.confusion_matrix(ytrain, clf_F.predict(Xtrain))
+
+                    # Confusion matrix for test set
+                    conf_mat_test = nu.confusion_matrix(ytest, clf_F.predict(Xtest))
+                    
+                    part_F = {
+                    "scores_train_F": scores_train_F,
+                    "scores_test_F": scores_test_F,
+                    "mean_cv_accuracy_F": mean_cv_accuracy_F,
+                    "clf": clf_F,
+                    "cv": cv_F,
+                    "conf_mat_train": conf_mat_train,
+                    "conf_mat_test": conf_mat_test,
+                    }
+                   
                     class_count_train = list(nu.Counter(ytrain).values())
                     class_count_test = list(nu.Counter(ytest).values())
-                    '''key = f"train_{ntrain}_test_{ntest}"'''
+                    
                     key=ntrain
                     answer[key] = {
-                    "partC": pb2,
-                    "partD": pb3,
-                    "partF": pb4,
+                    "partC": part_C,
+                    "partD": part_D,
+                    "partF": part_F,
                     "ntrain": ntrain,
                     "ntest": ntest,
                     "class_count_train": class_count_train,
