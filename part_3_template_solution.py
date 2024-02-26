@@ -134,7 +134,7 @@ class Section3:
            Xtrain, Xtest = X[:ntrain], X[ntrain:ntrain + ntest]
            ytrain, ytest = y[:ntrain], y[ntrain:ntrain + ntest]
 
-           model = LogisticRegression(random_state=42, max_iter=1000)
+           model = LogisticRegression(random_state=self.seed, max_iter=1000)
            model.fit(Xtrain, ytrain)
 
            train_scores = [nu.top_k_accuracy_score(ytrain, model.predict_proba(Xtrain), k=k) for k in ks]
@@ -347,11 +347,11 @@ class Section3:
         # Enter your code and fill the `answer` dictionary
         answer = {}
         answer = {}
-        cv = nu.StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+        cv = nu.StratifiedKFold(n_splits=5, shuffle=True, random_state=self.seed)
         class_weights = nu.compute_class_weight(class_weight='balanced', classes=np.unique(y), y=y)
         class_weights_dict = {0: class_weights[0], 1: class_weights[1]}
         '''print("Class weights:", class_weights_dict)'''
-        svc_classifier = nu.SVC(class_weight=class_weights_dict, random_state=42)
+        svc_classifier = nu.SVC(class_weight=class_weights_dict,random_state=self.seed)
         scoring = {'accuracy': nu.make_scorer(nu.accuracy_score),
            'precision': nu.make_scorer(nu.precision_score, average='macro'),
            'recall': nu.make_scorer(nu.recall_score, average='macro'),
