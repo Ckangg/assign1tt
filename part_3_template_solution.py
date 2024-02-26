@@ -70,7 +70,7 @@ class Section3:
         '''X,y =nu.load_mnist_dataset()
         X=nu.scale(X)'''
          
-        ntrains = [1000, 5000, 10000]
+        '''ntrains = [1000, 5000, 10000]
         ntests = [200, 1000, 2000]
         ks = [1, 2, 3, 4, 5]
          
@@ -86,17 +86,8 @@ class Section3:
              
              train_scores = [nu.top_k_accuracy_score(ytrain, model.predict_proba(Xtrain), k=k) for k in ks]
              test_scores = [nu.top_k_accuracy_score(ytest, model.predict_proba(Xtest), k=k) for k in ks]
-             '''
-             plt.figure(figsize=(8, 5))
-             plt.plot(ks, train_scores, label='Training', marker='o')
-             plt.plot(ks, test_scores, label='Testing', marker='o')
-             plt.xlabel('k')
-             plt.ylabel('Top-k Accuracy')
-             plt.title(f'Top-k Accuracy vs. k (ntrain={ntrain}, ntest={ntest})')
-             plt.legend()
-             plt.grid(True)
-             plt.show()
-             '''
+             
+         
              
              for k, score_train, score_test in zip(ks, train_scores, test_scores):
                  answer[k] = {"score_train": score_train, "score_test": score_test}
@@ -111,7 +102,7 @@ class Section3:
              answer["text_rate_accuracy_change"] = "with the K becomes larger, the test accuracy rate becomes higher."
              
              # Comments on the usefulness of top-k accuracy metric
-             answer["text_is_topk_useful_and_why"] = "Top-k accuracy is useful when there are multiple classifers, in this situation, the topk accuracy is more suitable to judge the ability of claasifier than accuracy.  " \
+             answer["text_is_topk_useful_and_why"] = "Top-k accuracy is useful when there are multiple classifers, in this situation, the topk accuracy is more suitable to judge the ability of claasifier than accuracy.  " \'''
                                           
         
 
@@ -133,7 +124,41 @@ class Section3:
         answer[k] (k=1,2,3,4,5) is a dictionary with the following keys: 
         - "score_train" : the topk accuracy score for the training set
         - "score_test" : the topk accuracy score for the testing set
-        """
+        """'''
+       ntrains = [1000, 5000, 10000]
+       ntests = [200, 1000, 2000]
+       ks = [1, 2, 3, 4, 5]
+       answer = {}
+
+       for ntrain, ntest in zip(ntrains, ntests):
+           Xtrain, Xtest = X[:ntrain], X[ntrain:ntrain + ntest]
+           ytrain, ytest = y[:ntrain], y[ntrain:ntrain + ntest]
+
+           model = LogisticRegression(random_state=42, max_iter=1000)
+           model.fit(Xtrain, ytrain)
+
+           train_scores = [nu.top_k_accuracy_score(ytrain, model.predict_proba(Xtrain), k=k) for k in ks]
+           test_scores = [nu.top_k_accuracy_score(ytest, model.predict_proba(Xtest), k=k) for k in ks]
+
+           answer["clf"] = model
+
+           answer["plot_k_vs_score_train"] = list(zip(ks, train_scores))
+           answer["plot_k_vs_score_test"] = list(zip(ks, test_scores))
+
+    # Additional analysis on rate of accuracy change for testing data
+           answer["text_rate_accuracy_change"] = "With the increase in K, the test accuracy rate tends to improve."
+
+    # Comments on the usefulness of top-k accuracy metric
+           answer["text_is_topk_useful_and_why"] = (
+        "Top-k accuracy is useful when there are multiple classifiers. "
+        "In this situation, top-k accuracy is more suitable than accuracy alone "
+        "to assess the classifier's performance across the top K predicted classes."
+           )
+
+           for k, score_train, score_test in zip(ks, train_scores, test_scores):
+               answer[k] = {"score_train": score_train, "score_test": score_test}
+       
+       
 
         return answer, Xtrain, ytrain, Xtest, ytest
 
@@ -232,8 +257,8 @@ class Section3:
 
         # Enter your code and fill the `answer` dictionary
         answer = {}
-        cv = nu.StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
-        svc_classifier = nu.SVC(random_state=42)
+        cv = nu.StratifiedKFold(n_splits=5, shuffle=True,random_state=self.seed)
+        svc_classifier = nu.SVC(random_state=self.seed)
         scoring = {'accuracy': nu.make_scorer(nu.accuracy_score),
            'precision': nu.make_scorer(nu.precision_score, average='macro'),
            'recall': nu.make_scorer(nu.recall_score, average='macro'),
