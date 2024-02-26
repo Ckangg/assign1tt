@@ -104,8 +104,8 @@ class Section2:
         # return values:
         # Xtrain, ytrain, Xtest, ytest: the data used to fill the `answer`` dictionary
 
-        '''Xtrain = Xtest = np.zeros([1, 1], dtype="float")
-        ytrain = ytest = np.zeros([1], dtype="int")'''
+        Xtrain = Xtest = np.zeros([1, 1], dtype="float")
+        ytrain = ytest = np.zeros([1], dtype="int")
 
         return answer, Xtrain, ytrain, Xtest, ytest
 
@@ -139,8 +139,8 @@ class Section2:
        
         answer = {}
        
-        pb2={}
-        sizes = [(1000, 200), (5000, 1000), (10000, 2000)]
+        
+        
         for i in range(len(ntrain_list)):
                     ntrain = ntrain_list[i]
                     ntest = ntest_list[i]
