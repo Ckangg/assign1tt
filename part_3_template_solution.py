@@ -125,37 +125,34 @@ class Section3:
         - "score_train" : the topk accuracy score for the training set
         - "score_test" : the topk accuracy score for the testing set
         """'''
-       ntrains = [1000, 5000, 10000]
-       ntests = [200, 1000, 2000]
-       ks = [1, 2, 3, 4, 5]
-       answer = {}
+       
+        ks = [1, 2, 3, 4, 5]
+        answer = {}
 
-       for ntrain, ntest in zip(ntrains, ntests):
-           Xtrain, Xtest = X[:ntrain], X[ntrain:ntrain + ntest]
-           ytrain, ytest = y[:ntrain], y[ntrain:ntrain + ntest]
+       
 
-           model = LogisticRegression(random_state=self.seed, max_iter=1000)
-           model.fit(Xtrain, ytrain)
+        model = LogisticRegression(random_state=self.seed, max_iter=1000)
+        model.fit(Xtrain, ytrain)
 
-           train_scores = [nu.top_k_accuracy_score(ytrain, model.predict_proba(Xtrain), k=k) for k in ks]
-           test_scores = [nu.top_k_accuracy_score(ytest, model.predict_proba(Xtest), k=k) for k in ks]
+        train_scores = [nu.top_k_accuracy_score(ytrain, model.predict_proba(Xtrain), k=k) for k in ks]
+        test_scores = [nu.top_k_accuracy_score(ytest, model.predict_proba(Xtest), k=k) for k in ks]
 
-           answer["clf"] = model
+        answer["clf"] = model
 
-           answer["plot_k_vs_score_train"] = list(zip(ks, train_scores))
-           answer["plot_k_vs_score_test"] = list(zip(ks, test_scores))
+        answer["plot_k_vs_score_train"] = list(zip(ks, train_scores))
+        answer["plot_k_vs_score_test"] = list(zip(ks, test_scores))
 
     # Additional analysis on rate of accuracy change for testing data
-           answer["text_rate_accuracy_change"] = "With the increase in K, the test accuracy rate tends to improve."
+        answer["text_rate_accuracy_change"] = "With the increase in K, the test accuracy rate tends to improve."
 
     # Comments on the usefulness of top-k accuracy metric
-           answer["text_is_topk_useful_and_why"] = (
+        answer["text_is_topk_useful_and_why"] = (
         "Top-k accuracy is useful when there are multiple classifiers. "
         "In this situation, top-k accuracy is more suitable than accuracy alone "
         "to assess the classifier's performance across the top K predicted classes."
            )
 
-           for k, score_train, score_test in zip(ks, train_scores, test_scores):
+        for k, score_train, score_test in zip(ks, train_scores, test_scores):
                answer[k] = {"score_train": score_train, "score_test": score_test}
        
        
