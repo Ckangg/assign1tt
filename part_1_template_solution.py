@@ -91,8 +91,7 @@ class Section1:
         Xtest, ytest = u.filter_out_7_9s(Xtest, ytest)
         Xtrain = nu.scale_data(Xtrain)
         Xtest = nu.scale_data(Xtest)
-        ytest = nu.scale_data(ytest)
-        ytrain = nu.scale_data(ytrain)
+        
         answer = {}
 
         # Enter your code and fill the `answer` dictionary
