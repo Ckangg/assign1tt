@@ -141,8 +141,10 @@ class Section2:
        
         pb2={}
         sizes = [(1000, 200), (5000, 1000), (10000, 2000)]
+        for i in range(len(ntrain_list)):
+                    ntrain = ntrain_list[i]
+                    ntest = ntest_list[i]
         
-        for ntrain, ntest in sizes:
                     Xtrain, ytrain = X[:ntrain], y[:ntrain]
                     Xtest, ytest = X[ntrain:ntrain+ntest], y[ntrain:ntrain+ntest]
                     clf_C = nu.DecisionTreeClassifier(random_state=self.seed)
