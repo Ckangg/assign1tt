@@ -152,7 +152,7 @@ class Section3:
         "to assess the classifier's performance across the top K predicted classes."
            )
 
-        for k, score_train, score_test in zip(ks, train_scores, test_scores):
+        for k in ks:
                answer[k] = {"score_train": score_train, "score_test": score_test}
        
        
