@@ -171,6 +171,8 @@ class Section2:
                     partD = {"scores_D": scores_D, "clf": clf_D, "cv": cv_D}
                     cv_F = nu.ShuffleSplit(n_splits=5, test_size=0.2,random_state=self.seed)
                     clf_F = nu.LogisticRegression(max_iter=300, multi_class='ovr', solver='lbfgs')
+                    
+                    scores=cross_validate(clf_F,Xtrain,ytrain,cv=cv_F,return_train_score=True)
                     clf_F.fit(Xtrain, ytrain)
                     scores_train_F = clf_F.score(Xtrain, ytrain)
 
@@ -178,8 +180,8 @@ class Section2:
                     scores_test_F = clf_F.score(Xtest, ytest)
 
                     # Mean cross-validation accuracy
-                    results_F = nu.train_simple_classifier_with_cv(Xtrain=Xtrain, ytrain=ytrain, clf=clf_F, cv=cv_F)
-                    mean_cv_accuracy_F = results_F['test_score'].mean()
+                    #results_F = nu.train_simple_classifier_with_cv(Xtrain=Xtrain, ytrain=ytrain, clf=clf_F, cv=cv_F)
+                    mean_cv_accuracy_F = scores['test_score'].mean()
 
                     # Confusion matrix for training set
                     conf_mat_train = nu.confusion_matrix(ytrain, clf_F.predict(Xtrain))
