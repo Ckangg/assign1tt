@@ -131,7 +131,7 @@ class Section3:
 
        
 
-        model = LogisticRegression(random_state=self.seed, max_iter=1000)
+        model = nu.LogisticRegression(random_state=self.seed, max_iter=1000)
         model.fit(Xtrain, ytrain)
 
         train_scores = [nu.top_k_accuracy_score(ytrain, model.predict_proba(Xtrain), k=k) for k in ks]
@@ -141,6 +141,8 @@ class Section3:
 
         answer["plot_k_vs_score_train"] = list(zip(ks, train_scores))
         answer["plot_k_vs_score_test"] = list(zip(ks, test_scores))
+        train_scores_list=list(train_scores)
+        test_scores_list=list(test_scores)
 
     # Additional analysis on rate of accuracy change for testing data
         answer["text_rate_accuracy_change"] = "With the increase in K, the test accuracy rate tends to improve."
@@ -152,8 +154,8 @@ class Section3:
         "to assess the classifier's performance across the top K predicted classes."
            )
 
-        for k in ks:
-               answer[k] = {"score_train": score_train, "score_test": score_test}
+        for i, k in enumerate(ks):
+             answer[k] = {"score_train": train_scores_list[i], "score_test": test_scores_list[i]}
        
        
 
